@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="QLiKHVaHoaDonTienDien" default="default" basedir=".">
+    <description>Builds, tests, and runs the project QLiKHVaHoaDonTienDien.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar:                  JAR building
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="QLiKHVaHoaDonTienDien-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT a.id as idbookedroom, GREATEST(a.checkin,?) as checkin, LEAST(a.checkout,?) as checkout, a.price, a.saleoff as roomsaleoff, b.id as idbooking, b.saleoff as bookingsaleoff,  c.id as idclient, c.name, c.address, c.idcard, c.tel  FROM tblBookedRoom a, tblBooking b, tblClient c WHERE a.idroom = ? AND a.ischeckin = 1  AND a.checkout > ? AND a.checkin < ? AND b.id = a.idbooking AND c.id = b.idclient"
+
+
+
+
+SELECT a.id, a.name, a.type, a.des, (SELECT SUM(DATEDIFF(LEAST(b.checkout, ?), GREATEST(b.checkin, ?))) FROM tblBookedRoom b  WHERE b.idroom = a.id AND b.checkout > ? AND b.checkin < ?  AND b.ischeckin = 1 GROUP BY b.idroom) as days,  (SELECT SUM(DATEDIFF(LEAST(b.checkout, ?), GREATEST(b.checkin, ?))*b.price) FROM tblBookedRoom b  WHERE b.idroom = a.id AND b.checkout > ? AND b.checkin < ?  AND b.ischeckin = 1 GROUP BY b.idroom) as income   FROM tblRoom a ORDER BY income DESC, days DESC";
+
+
+SELECT
+tbl3.billid,
+    tbl3.useIdx AS UnitsUsed,
+    perLevel.maxIdxLevel AS MaxUnitsLevel,
+    perLevel.priceLevel AS UnitPrice
+FROM tbl_contract AS con
+JOIN tbl_household_of_contract AS hoc ON con.ID = hoc.ContractID
+JOIN (
+    SELECT 
+        tbl2.idx - tbl1.idx AS useIdx, 
+        tbl1.BillID, 
+        tbl1.householdofcontractid
+    FROM (
+        SELECT 
+            iem1.idx, 
+            iemofbill1.BillID AS billID, 
+            iem1.householdofcontractid
+        FROM tbl_idx_elec_meter AS iem1
+        JOIN tbl_iem_of_bill AS iemofbill1 ON iemofbill1.IdxElecMeterID = iem1.ID
+        WHERE iemofbill1.isPrevMonthIEM = 1
+    ) AS tbl1
+    JOIN (
+        SELECT 
+            iem2.idx, 
+            iemofbill2.BillID AS billID
+        FROM tbl_idx_elec_meter AS iem2
+        JOIN tbl_iem_of_bill AS iemofbill2 ON iemofbill2.IdxElecMeterID = iem2.ID
+        WHERE iemofbill2.isPrevMonthIEM = 0
+    ) AS tbl2 ON tbl1.BillID = tbl2.BillID
+) AS tbl3 ON tbl3.householdofcontractid = hoc.ID
+JOIN tbl_bill AS b ON b.id = tbl3.billid
+JOIN tbl_level_elec_service_update AS levelUpdate ON levelUpdate.ID = b.levelElecServiceUpdateID
+JOIN tbl_per_level_elec_service AS perLevel ON perLevel.levelElecServiceUpdateID = levelUpdate.ID
+JOIN tbl_customer AS cs ON cs.id = con.CustomerID
+WHERE cs.ID = 1 
+    AND con.signDate <= b.closingDate 
+    AND con.endDate >= b.closingDate 
+    AND b.isPayment = 0
+GROUP BY tbl3.billid, tbl3.useIdx , perLevel.maxIdxLevel, perLevel.priceLevel;
+
+
+
+
+
+
