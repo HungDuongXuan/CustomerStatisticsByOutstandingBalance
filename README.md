@@ -10,13 +10,13 @@ The "Customer Outstanding Debt Statistics" module is designed to provide compreh
 
     ![alt text](image-1.png)
 
-2. **Main Interface for Manager**
+2. **Manager Home View**
    - Provides access to various functions of the statistics module.
    - Includes options for viewing reports and performing debt analysis.
 
    ![alt text](image-2.png)
 
-3. **Statistics Function Selection Interface**
+3. **Select Statistics Function View**
    - Allows management staff to select different statistical functions.
    - Options include viewing and analyzing outstanding debt data.
 
@@ -28,13 +28,13 @@ The "Customer Outstanding Debt Statistics" module is designed to provide compreh
 
    ![alt text](image-4.png)
 
-5. **Outstanding Invoices for a Specific Customer**
+5. **Customer Outstanding Invoices View**
    - Shows all outstanding invoices for a particular customer.
    - Lists details of each unpaid invoice.
 
    ![alt text](image-5.png)
 
-6. **Detailed Invoice Information**
+6. **Detailed Invoice View**
    - Provides detailed information about each outstanding invoice.
    - Includes invoice amounts, due dates, and other relevant details.
 
